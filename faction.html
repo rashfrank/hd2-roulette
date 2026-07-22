@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FACTION ROULETTE // Helldivers 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/faction.css">
+</head>
+<body>
+
+<div class="hazard-bar top"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="eyebrow">SUPER EARTH THREAT ASSESSMENT · FACTION ROULETTE</div>
+    <h1 class="title">FACTION <span class="accent">ROULETTE</span></h1>
+    <p class="subtitle">Land 4 matching factions in a row to win. Anything else — mission failed.</p>
+    <a href="index.html" class="nav-link">← Back to Build Generator</a>
+  </div>
+</header>
+
+<main class="faction-wrap">
+
+  <div class="faction-reel-row">
+    <div class="reel faction-reel" data-slot="1">
+      <div class="reel-label">SLOT 1</div>
+      <div class="reel-window faction-window"><div class="reel-strip"></div></div>
+    </div>
+    <div class="reel faction-reel" data-slot="2">
+      <div class="reel-label">SLOT 2</div>
+      <div class="reel-window faction-window"><div class="reel-strip"></div></div>
+    </div>
+    <div class="reel faction-reel" data-slot="3">
+      <div class="reel-label">SLOT 3</div>
+      <div class="reel-window faction-window"><div class="reel-strip"></div></div>
+    </div>
+    <div class="reel faction-reel" data-slot="4">
+      <div class="reel-label">SLOT 4</div>
+      <div class="reel-window faction-window"><div class="reel-strip"></div></div>
+    </div>
+  </div>
+
+  <div id="result-banner" class="result-banner"></div>
+
+  <div class="controls">
+    <button id="faction-spin-btn" class="spin-btn">
+      <span class="spin-btn-text">ENGAGE</span>
+      <span class="spin-btn-sub">ROLL FOR DEPLOYMENT</span>
+    </button>
+    <div id="odds-display" class="odds-display"></div>
+    <div class="lock-hint">4-in-a-row wins. Every loss raises your odds for the next spin.</div>
+  </div>
+
+</main>
+
+<div id="flash-overlay" class="flash-overlay"></div>
+
+<div class="hazard-bar bottom"></div>
+
+<script src="js/faction.js"></script>
+</body>
+</html>

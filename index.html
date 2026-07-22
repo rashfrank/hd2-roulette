@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELLDIVER LOADOUT // Random Build Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="hazard-bar top"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="eyebrow">MINISTRY OF DEFENSE DIRECTIVE · RANDOM LOADOUT</div>
+    <h1 class="title">BUILD <span class="accent">GENERATOR</span></h1>
+    <p class="subtitle">Hit DEPLOY — Super Earth decides how you fight.</p>
+    <a href="faction.html" class="nav-link">→ Faction Roulette</a>
+  </div>
+</header>
+
+<main class="reels-wrap">
+
+  <section class="filter-section">
+    <div class="filter-header">
+      <h2 class="group-label"><span class="idx">00</span> Warbond Filter</h2>
+      <div class="filter-actions">
+        <button type="button" id="filter-all" class="filter-action-btn">select all</button>
+        <button type="button" id="filter-none" class="filter-action-btn">clear all</button>
+      </div>
+    </div>
+    <div id="warbond-filter" class="filter-panel"></div>
+    <div id="filter-warning" class="filter-warning"></div>
+  </section>
+
+  <section class="reel-group">
+    <h2 class="group-label"><span class="idx">01</span> Weapons</h2>
+    <div class="reel-row">
+      <div class="reel" data-category="primary" data-label="PRIMARY">
+        <div class="reel-label">PRIMARY WEAPON</div>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+      <div class="reel" data-category="secondary" data-label="SECONDARY">
+        <div class="reel-label">SECONDARY WEAPON</div>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+      <div class="reel" data-category="grenade" data-label="GRENADE">
+        <div class="reel-label">GRENADE</div>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reel-group">
+    <h2 class="group-label"><span class="idx">02</span> Stratagems</h2>
+    <div class="reel-row four">
+      <div class="reel" data-category="stratagem" data-label="STRATAGEM 1">
+        <div class="reel-label">SLOT 1</div>
+        <select class="stype-select" aria-label="Slot 1 type">
+          <option value="">Any Stratagem</option>
+          <option value="orbital" selected>Orbital</option>
+          <option value="eagle">Eagle</option>
+          <option value="sentry">Sentry</option>
+          <option value="support_weapon">Support Weapon</option>
+          <option value="backpack">Backpack</option>
+          <option value="vehicle">Vehicle</option>
+        </select>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+      <div class="reel" data-category="stratagem" data-label="STRATAGEM 2">
+        <div class="reel-label">SLOT 2</div>
+        <select class="stype-select" aria-label="Slot 2 type">
+          <option value="">Any Stratagem</option>
+          <option value="orbital">Orbital</option>
+          <option value="eagle" selected>Eagle</option>
+          <option value="sentry">Sentry</option>
+          <option value="support_weapon">Support Weapon</option>
+          <option value="backpack">Backpack</option>
+          <option value="vehicle">Vehicle</option>
+        </select>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+      <div class="reel" data-category="stratagem" data-label="STRATAGEM 3">
+        <div class="reel-label">SLOT 3</div>
+        <select class="stype-select" aria-label="Slot 3 type">
+          <option value="">Any Stratagem</option>
+          <option value="orbital">Orbital</option>
+          <option value="eagle">Eagle</option>
+          <option value="sentry" selected>Sentry</option>
+          <option value="support_weapon">Support Weapon</option>
+          <option value="backpack">Backpack</option>
+          <option value="vehicle">Vehicle</option>
+        </select>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+      <div class="reel" data-category="stratagem" data-label="STRATAGEM 4">
+        <div class="reel-label">SLOT 4</div>
+        <select class="stype-select" aria-label="Slot 4 type">
+          <option value="">Any Stratagem</option>
+          <option value="orbital">Orbital</option>
+          <option value="eagle">Eagle</option>
+          <option value="sentry">Sentry</option>
+          <option value="support_weapon" selected>Support Weapon</option>
+          <option value="backpack">Backpack</option>
+          <option value="vehicle">Vehicle</option>
+        </select>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+    </div>
+    <div class="stype-hint">Pick what each stratagem slot rolls for. "Any Stratagem" pulls from the whole list.</div>
+  </section>
+
+  <section class="reel-group">
+    <h2 class="group-label"><span class="idx">03</span> Booster</h2>
+    <div class="reel-row single">
+      <div class="reel" data-category="booster" data-label="BOOSTER">
+        <div class="reel-label">BOOSTER</div>
+        <div class="reel-window"><div class="reel-strip"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="controls">
+    <button id="spin-btn" class="spin-btn">
+      <span class="spin-btn-text">DEPLOY SQUAD</span>
+      <span class="spin-btn-sub">FOR SUPER EARTH</span>
+    </button>
+    <div class="lock-hint">Click a reel to lock it and re-roll the rest</div>
+  </div>
+
+</main>
+
+<div class="hazard-bar bottom"></div>
+
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
