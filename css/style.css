@@ -154,6 +154,10 @@ body{
   grid-template-columns: minmax(200px, 280px);
   justify-content: center;
 }
+.reel-row.double{
+  grid-template-columns: repeat(2, minmax(200px, 280px));
+  justify-content: center;
+}
 
 @media (max-width: 760px){
   .reel-row{ grid-template-columns: 1fr 1fr; }
@@ -161,6 +165,7 @@ body{
 }
 @media (max-width: 460px){
   .reel-row, .reel-row.four{ grid-template-columns: 1fr; }
+  .reel-row.double{ grid-template-columns: 1fr; }
 }
 
 /* ==========================================================================
@@ -392,6 +397,26 @@ body{
   letter-spacing: 0.03em;
   text-align: center;
 }
+
+.skip-anim-toggle{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  cursor: pointer;
+  user-select: none;
+}
+.skip-anim-toggle input{
+  width: 15px;
+  height: 15px;
+  accent-color: var(--hazard);
+  cursor: pointer;
+}
+.skip-anim-toggle:hover{ color: var(--hazard); }
 
 /* ==========================================================================
    ФИЛЬТР ПО ВАРБОНДАМ

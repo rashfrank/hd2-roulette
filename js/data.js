@@ -97,7 +97,7 @@ const WEAPON_DATA = {
     { id: 'Stoker', name:'SMG/FLAM-34 Stoker', image: 'images/primary/stoker.webp', source: 'Entrenched_Division' },
     { id: 'Gallant', name:'SMG-203 Gallant', image: 'images/primary/gallant.png', source: 'Exo_Experts' },
     { id: 'Punisher', name:'SG-8 Punisher', image: 'images/primary/punisher.png', source: 'Helldivers_Mobilize!' },
-    { id: 'Slugger', name:'SG-85 Slugger', image: 'images/primary/slugger.png', source: 'Helldivers_Mobilize!' },
+    { id: 'Slugger', name:'SG-8S Slugger', image: 'images/primary/slugger.png', source: 'Helldivers_Mobilize!' },
     { id: 'Cookout', name:'SG-451 Cookout', image: 'images/primary/cookout.png', source: 'Freedom\'s_Flame' },
     { id: 'Breaker', name:'SG-225 Breaker', image: 'images/primary/breaker.png', source: 'Helldivers_Mobilize!' },
     { id: 'Breaker_Spray&Pray', name:'SG-225SP Breaker Spray&Pray', image: 'images/primary/breaker_spray_and_pray.png', source: 'Helldivers_Mobilize!' },
@@ -106,7 +106,7 @@ const WEAPON_DATA = {
     { id: 'Breaker_Incendiary', name:'SG-225IE Breaker Incendiary', image: 'images/primary/breaker_incendiary.png', source: 'steeled_veterans' },
     { id: 'Double_Freedom', name:'DBS-2 Double Freedom', image: 'images/primary/Double_Freedom.png', source: 'Python_Commandos' },
     { id: 'Sweeper', name:'SG-97 Sweeper', image: 'images/primary/sweeper.png', source: 'Entrenched_Division' },
-    { id: 'Exploding_Crossbow', name:'СВ-9 Exploding Crossbow', image: 'images/primary/exploding_crossbow.png', source: 'democratic_detonation' },
+    { id: 'Exploding_Crossbow', name:'CB-9 Exploding Crossbow', image: 'images/primary/exploding_crossbow.png', source: 'democratic_detonation' },
     { id: 'Eruptor', name:'R-36 Eruptor', image: 'images/primary/eruptor.png', source: 'democratic_detonation' },
     { id: 'Punisher_Plasma', name:'SG-8P Punisher Plasma', image: 'images/primary/punisher_plasma.png', source: 'cutting_edge' },
     { id: 'Blitzer', name:'ARC-12 Blitzer', image: 'images/primary/blitzer.png', source: 'cutting_edge' },
@@ -294,8 +294,47 @@ const BOOSTER_DATA = [
    {id: 'sample_extricator', name: 'Sample Extricator', image: 'images/booster/sample_extricator.svg', source: 'Borderline_Justice' }, 
    {id: 'sample_scanner', name: 'Sample Scanner', image: 'images/booster/sample_scanner.svg', source: 'Masters_of_Ceremony' },
    {id: 'stun_pods', name: 'Stun Pods', image: 'images/booster/stun_pods.svg', source: 'Force_of_Law' }, 
-   {id: 'concealed_insertion', name: 'Concealed Insertion', image: 'images/booster/concealed_insertion.svg', source: 'Redacted_Regiment' }   
+   {id: 'concealed_insertion', name: 'Concealed Insertion', image: 'images/booster/concealed_insertion.svg', source: 'Masters_of_Ceremony' }   
+];
+
+// Улучшения брони (armor passives) - 9-й слот рулетки, рядом с бустером.
+// Многие пассивки встречаются в броне из НЕСКОЛЬКИХ разных варбондов -
+// поэтому source может быть массивом: предмет проходит фильтр, если
+// владеешь ХОТЯ БЫ ОДНИМ из перечисленных варбондов.
+const ARMOR_PASSIVE_DATA = [
+  { id: 'extra_padding', name: 'Extra Padding', image: 'images/armor_passive/extra_padding.svg', source: ['base', 'steeled_veterans', 'Helldivers_Mobilize!', 'polar_patriots'] },
+  { id: 'democracy_protects', name: 'Democracy Protects', image: 'images/armor_passive/democracy_protects.svg', source: ['super_citizen', 'Helldivers_Mobilize!'] },
+  { id: 'servo_assisted', name: 'Servo-Assisted', image: 'images/armor_passive/servo_assisted.svg', source: ['steeled_veterans', 'polar_patriots', 'Helldivers_Mobilize!'] },
+  { id: 'med_kit', name: 'Med-Kit', image: 'images/armor_passive/med_kit.svg', source: ['Helldivers_Mobilize!', 'cutting_edge', 'democratic_detonation'] },
+  { id: 'engineering_kit', name: 'Engineering Kit', image: 'images/armor_passive/engineering_kit.svg', source: ['Helldivers_Mobilize!', 'steeled_veterans', 'democratic_detonation', 'cutting_edge', 'Viper_Commandos', 'polar_patriots'] },
+  { id: 'scout', name: 'Scout', image: 'images/armor_passive/scout.svg', source: ['polar_patriots', 'Helldivers_Mobilize!'] },
+  { id: 'fortified', name: 'Fortified', image: 'images/armor_passive/fortified.svg', source: ['democratic_detonation', 'Helldivers_Mobilize!', 'polar_patriots', 'steeled_veterans'] },
+  { id: 'electrical_conduit', name: 'Electrical Conduit', image: 'images/armor_passive/electrical_conduit.svg', source: 'cutting_edge' },
+  { id: 'peak_physique', name: 'Peak Physique', image: 'images/armor_passive/peak_physique.svg', source: 'Viper_Commandos' },
+  { id: 'inflammable', name: 'Inflammable', image: 'images/armor_passive/inflammable.svg', source: 'Freedom\'s_Flame' },
+  { id: 'advanced_filtration', name: 'Advanced Filtration', image: 'images/armor_passive/advanced_filtration.svg', source: 'chemical_agents' },
+  { id: 'unflinching', name: 'Unflinching', image: 'images/armor_passive/unflinching.svg', source: 'truth_enforcers' },
+  { id: 'siege_ready', name: 'Siege-Ready', image: 'images/armor_passive/siege_ready.svg', source: 'Urban_Legends' },
+  { id: 'acclimated', name: 'Acclimated', image: 'images/armor_passive/acclimated.svg', source: 'Righteous_Revenants' },
+  { id: 'integrated_explosives', name: 'Integrated Explosives', image: 'images/armor_passive/integrated_explosives.svg', source: 'Servants_of_Freedom' },
+  { id: 'gunslinger', name: 'Gunslinger', image: 'images/armor_passive/gunslinger.svg', source: 'Borderline_Justice' },
+  { id: 'reinforced_epaulettes', name: 'Reinforced Epaulettes', image: 'images/armor_passive/reinforced_epaulettes.svg', source: 'Masters_of_Ceremony' },
+  { id: 'ballistic_padding', name: 'Ballistic Padding', image: 'images/armor_passive/ballistic_padding.svg', source: 'Force_of_Law' },
+  { id: 'adreno_defibrillator', name: 'Adreno-Defibrillator', image: 'images/armor_passive/adreno_defibrillator.svg', source: 'Control_Group' },
+  { id: 'desert_stormer', name: 'Desert Stormer', image: 'images/armor_passive/desert_stormer.svg', source: 'Dust_Devils' },
+  // Картинок для этих 8 ещё нет - положишь файлы по путям ниже, и заглушка сама сменится на иконку
+  { id: 'feet_first', name: 'Feet First', image: 'images/armor_passive/feet_first.svg', source: 'Obedient_Democracy_Support_Troopers' },
+  { id: 'rock_solid', name: 'Rock Solid', image: 'images/armor_passive/rock_solid.svg', source: 'Python_Commandos' },
+  { id: 'supplementary_adrenaline', name: 'Supplementary Adrenaline', image: 'images/armor_passive/supplementary_adrenaline.svg', source: 'Siege_Breakers' },
+  { id: 'reduced_signature', name: 'Reduced Signature', image: 'images/armor_passive/reduced_signature.svg', source: 'Redacted_Regiment' },
+  { id: 'concussive_padding_reinforced', name: 'Concussive Padding, Reinforced', image: 'images/armor_passive/concussive_padding.svg', source: 'Entrenched_Division' },
+  { id: 'concussive_padding_hazmat', name: 'Concussive Padding, Hazmat', image: 'images/armor_passive/concussive_padding.svg', source: 'Entrenched_Division' },
+  { id: 'concussive_padding_grenadier', name: 'Concussive Padding, Grenadier', image: 'images/armor_passive/concussive_padding.svg', source: 'Entrenched_Division' },
+  { id: 'oxygenator', name: 'Oxygenator', image: 'images/armor_passive/oxygenator.svg', source: 'Exo_Experts' },
 ];
 
 // подключаем бустеры к общему объекту данных, чтобы script.js мог их найти по ключу 'booster'
 WEAPON_DATA.booster = BOOSTER_DATA;
+
+// подключаем улучшения брони к общему объекту данных, чтобы script.js мог их найти по ключу 'armor_passive'
+WEAPON_DATA.armor_passive = ARMOR_PASSIVE_DATA;

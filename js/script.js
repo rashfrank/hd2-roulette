@@ -31,7 +31,11 @@ function getStype(reel){
 const activeSources = new Set(WARBONDS.map(w => w.id));
 
 function isSourceActive(item){
-  return activeSources.has(item.source || 'unknown');
+  const src = item.source || 'unknown';
+  if (Array.isArray(src)){
+    return src.some(s => activeSources.has(s));
+  }
+  return activeSources.has(src);
 }
 
 function buildFilterPanel(){
@@ -101,28 +105,20 @@ const fanfareSound = new Audio('audio/fanfare.mp3');
 const landSoundBase = new Audio('audio/land.mp3');
 
 const SPIN_VOLUME = 0.5;      // громкость спина в обычный момент
-const SPIN_DUCK_VOLUME = 0.15; // громкость спина, пока звучит "приземление"
-const LAND_VOLUME = 0.95;      // land должен быть хорошо слышен
+const LAND_VOLUME = 0.35;     // звук приземления - теперь один на весь спин, потише
 
 spinSound.volume = SPIN_VOLUME;
 spinSound.loop = true; // спин теперь длинный (~11 сек), трек может быть короче - зацикливаем
 fanfareSound.volume = 0.8;
 landSoundBase.volume = LAND_VOLUME;
 
-let duckTimeout = null;
-
+// land.mp3 теперь играет ОДИН РАЗ на весь спин (когда все катушки уже
+// остановились), а не при приземлении каждой отдельной катушки - раньше
+// это било по ушам, особенно при 7-8 катушках подряд
 function playLandSound(){
   try {
-    // на мгновение притушим гул спина, чтобы "удар" катушки было хорошо слышно
-    spinSound.volume = SPIN_DUCK_VOLUME;
-    clearTimeout(duckTimeout);
-    duckTimeout = setTimeout(() => { spinSound.volume = SPIN_VOLUME; }, 450);
-
-    // клонируем узел на каждый вызов - несколько катушек могут
-    // остановиться почти одновременно, и звуки не должны обрывать друг друга
-    const node = landSoundBase.cloneNode();
-    node.volume = LAND_VOLUME;
-    node.play().catch(() => {});
+    landSoundBase.currentTime = 0;
+    landSoundBase.play().catch(() => {});
   } catch (e) { /* игнорируем */ }
 }
 
@@ -136,7 +132,6 @@ function playSpinSound(){
 
 function stopSpinSound(){
   // плавно гасим звук спина за ~250мс, чтобы не было резкого обрыва
-  clearTimeout(duckTimeout);
   const fadeStep = SPIN_VOLUME / 12;
   const fadeInterval = setInterval(() => {
     if (spinSound.volume - fadeStep <= 0){
@@ -254,6 +249,28 @@ function spinReel(reel, finalItem, order){
     const windowEl = reel.querySelector('.reel-window');
     const strip = windowEl.querySelector('.reel-strip');
 
+    reel.classList.add('is-spinning');
+    reel.classList.remove('is-locked', 'just-landed');
+
+    // ---- РЕЖИМ "SKIP ANIMATION": сразу показываем финальный предмет ----
+    if (isSkipEnabled()){
+      strip.innerHTML = '';
+      strip.style.transition = 'none';
+      strip.appendChild(makeItemEl(finalItem));
+      strip.style.transform = 'translateY(0px)';
+
+      // небольшая лесенка по времени (не 0мс для всех разом), чтобы звук
+      // приземления каждой катушки был слышен отдельно, а не одной кучей
+      setTimeout(() => {
+        reel.classList.remove('is-spinning');
+        reel.classList.add('just-landed');
+        reel.dataset.currentId = finalItem.id;
+        setTimeout(() => reel.classList.remove('just-landed'), 400);
+        resolve();
+      }, 80 + order * 90);
+      return;
+    }
+
     strip.innerHTML = '';
     strip.style.transition = 'none';
     strip.style.transform = 'translateY(0px)';
@@ -263,9 +280,6 @@ function spinReel(reel, finalItem, order){
       strip.appendChild(makeItemEl(pickOne(pool)));
     }
     strip.appendChild(makeItemEl(finalItem));
-
-    reel.classList.add('is-spinning');
-    reel.classList.remove('is-locked', 'just-landed');
 
     // форсируем reflow, чтобы браузер применил transform:0 перед стартом анимации
     // eslint-disable-next-line no-unused-expressions
@@ -284,7 +298,6 @@ function spinReel(reel, finalItem, order){
       reel.classList.remove('is-spinning');
       reel.classList.add('just-landed');
       reel.dataset.currentId = finalItem.id;
-      playLandSound();
       setTimeout(() => reel.classList.remove('just-landed'), 550);
       resolve();
     };
@@ -295,6 +308,11 @@ function spinReel(reel, finalItem, order){
 /* ---------- спин всех катушек ---------- */
 
 const stypeSelects = Array.from(document.querySelectorAll('.stype-select'));
+const skipAnimCheckbox = document.getElementById('skip-animation');
+
+function isSkipEnabled(){
+  return !!(skipAnimCheckbox && skipAnimCheckbox.checked);
+}
 
 function initStypeSelects(){
   stypeSelects.forEach(select => {
@@ -305,7 +323,7 @@ function initStypeSelects(){
 async function spinAll(){
   spinBtn.disabled = true;
   stypeSelects.forEach(s => s.disabled = true); // не даём менять тип слота посреди спина
-  playSpinSound();
+  if (!isSkipEnabled()) playSpinSound();
 
   const stratagemReels = reelEls.filter(r => r.dataset.category === 'stratagem');
   const usedStratagemIds = stratagemReels
@@ -333,6 +351,7 @@ async function spinAll(){
 
   await Promise.all(spins);
   stopSpinSound();
+  playLandSound();
   playFanfare();
   spinBtn.disabled = false;
   stypeSelects.forEach(s => s.disabled = false);
