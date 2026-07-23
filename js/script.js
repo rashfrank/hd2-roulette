@@ -105,7 +105,7 @@ const fanfareSound = new Audio('audio/fanfare.mp3');
 const landSoundBase = new Audio('audio/land.mp3');
 
 const SPIN_VOLUME = 0.5;      // громкость спина в обычный момент
-const LAND_VOLUME = 0.35;     // звук приземления - теперь один на весь спин, потише
+const LAND_VOLUME = 0.55;     // звук приземления - один на весь спин, чуть громче, но с паузой перед фанфарами
 
 spinSound.volume = SPIN_VOLUME;
 spinSound.loop = true; // спин теперь длинный (~11 сек), трек может быть короче - зацикливаем
@@ -352,7 +352,7 @@ async function spinAll(){
   await Promise.all(spins);
   stopSpinSound();
   playLandSound();
-  playFanfare();
+  setTimeout(() => playFanfare(), 350); // пауза, чтобы фанфары не перекрывали land
   spinBtn.disabled = false;
   stypeSelects.forEach(s => s.disabled = false);
 }

@@ -156,7 +156,10 @@ function spinReel(reel, finalFaction, order){
     // eslint-disable-next-line no-unused-expressions
     strip.offsetHeight; // форсируем reflow
 
-    const duration = 3200 + order * 500 + Math.random() * 500;
+    // между катушками теперь гарантированный минимум ~500мс разрыва
+    // (раньше большой случайный джиттер иногда "съедал" паузу между ними,
+    // и звуки приземления сливались в один)
+    const duration = 3000 + order * 700 + Math.random() * 200;
     const finalOffset = -(FILLER_COUNT * ITEM_HEIGHT);
 
     strip.style.transition = `transform ${duration}ms cubic-bezier(0.1, 0.7, 0.15, 1)`;
