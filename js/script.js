@@ -105,20 +105,21 @@ const fanfareSound = new Audio('audio/fanfare.mp3');
 const landSoundBase = new Audio('audio/land.mp3');
 
 const SPIN_VOLUME = 0.5;      // громкость спина в обычный момент
-const LAND_VOLUME = 0.55;     // звук приземления - один на весь спин, чуть громче, но с паузой перед фанфарами
+const LAND_VOLUME = 0.4;      // звук приземления - снова на каждой катушке, но умеренной громкости
 
 spinSound.volume = SPIN_VOLUME;
 spinSound.loop = true; // спин теперь длинный (~11 сек), трек может быть короче - зацикливаем
 fanfareSound.volume = 0.8;
 landSoundBase.volume = LAND_VOLUME;
 
-// land.mp3 теперь играет ОДИН РАЗ на весь спин (когда все катушки уже
-// остановились), а не при приземлении каждой отдельной катушки - раньше
-// это било по ушам, особенно при 7-8 катушках подряд
+// land.mp3 снова играет на каждой отдельно приземлившейся катушке ("тук-тук-тук"),
+// но громкость сделана умеренной, чтобы не било по ушам при 7-8 катушках подряд.
+// Клонируем узел на каждый вызов, чтобы соседние "туки" не обрывали друг друга.
 function playLandSound(){
   try {
-    landSoundBase.currentTime = 0;
-    landSoundBase.play().catch(() => {});
+    const node = landSoundBase.cloneNode();
+    node.volume = LAND_VOLUME;
+    node.play().catch(() => {});
   } catch (e) { /* игнорируем */ }
 }
 
@@ -286,8 +287,10 @@ function spinReel(reel, finalItem, order){
     strip.offsetHeight;
 
     // катушки останавливаются одна за другой (слева направо / сверху вниз) —
-    // общее время кручения растягивается примерно до 8-11 секунд для азарта
-    const duration = 8000 + order * 450 + Math.random() * 500;
+    // общее время кручения растягивается примерно до 8-11 секунд для азарта.
+    // Разрыв между катушками (700мс) больше джиттера (200мс) - гарантирует,
+    // что они не "слипнутся" по времени и тук-тук-тук будет слышно отдельно.
+    const duration = 7500 + order * 700 + Math.random() * 200;
     const finalOffset = -(FILLER_COUNT * ITEM_HEIGHT);
 
     strip.style.transition = `transform ${duration}ms cubic-bezier(0.1, 0.7, 0.15, 1)`;
@@ -298,6 +301,7 @@ function spinReel(reel, finalItem, order){
       reel.classList.remove('is-spinning');
       reel.classList.add('just-landed');
       reel.dataset.currentId = finalItem.id;
+      playLandSound();
       setTimeout(() => reel.classList.remove('just-landed'), 550);
       resolve();
     };
@@ -351,8 +355,7 @@ async function spinAll(){
 
   await Promise.all(spins);
   stopSpinSound();
-  playLandSound();
-  setTimeout(() => playFanfare(), 350); // пауза, чтобы фанфары не перекрывали land
+  setTimeout(() => playFanfare(), 350); // пауза, чтобы фанфары не перекрывали последний "тук"
   spinBtn.disabled = false;
   stypeSelects.forEach(s => s.disabled = false);
 }
